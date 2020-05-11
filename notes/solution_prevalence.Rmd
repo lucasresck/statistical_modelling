@@ -54,15 +54,15 @@ a) Escolha e justifique uma distribuição \textit{a priori} para $\theta$ -- le
  
  \textbf{Resposta:}
  
- Uma distribuição de probabilidade plausível para o parâmetro $\theta$ é dada pela distribuição beta, uma distribuição flexível, que pode assumir várias formas, dependendo da escolha de valores de $a$ e $b$. Nesse caso, a priori é $\xi(\theta) = \frac{1}{B(a,b)}\theta^{n-1}(1 - \theta)^{b - 1}$. Claro que temos que conhecer os valores $a$ e $b$. Segundo [este artigo](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703), os hiperparâmetros podem ser escolhidos em um painel de experts, usando resultados de estudos anteriores. 
+ Uma distribuição de probabilidade plausível para o parâmetro $\theta$ é dada pela Distribuição Beta. É uma distribuição suficientemente flexível, dado que pode assumir desde a forma da uniforme, até formato de uma normal a uma exponencial. Como estamos falando de uma priori, entretanto, precisamos escolher os parâmetros $a$ e $b$. Então teremos: 
  
- Nesse caso, a ideia seria aproximar a moda da distribuição $Beta$ para a prevalência acreditada por alguns epidemiologistas e, também, aproximar o desvio padrão como uma parte, um quarto, por exemplo, dos limites inferior e superior, acreditados pelo epidemeologista. 
+$$\xi(\theta) = \frac{1}{B(a,b)}\theta^{n-1}(1 - \theta)^{b - 1}$$
+
+Segundo [**este artigo**](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703), os hiperparâmetros podem ser escolhidos em um painel de experts, usando resultados de estudos anteriores. Nesse caso, a ideia é aproximar a moda da distribuição para a prevalência acreditada por alguns epidemiologistas e, também, aproximar o desvio padrão como uma parte, um quarto, por exemplo, dos limites inferior e superior. 
  
- Veja, entretando, que a escolha dos hiperarâmetros vai influenciar bastante o resultado, já que podemos estar, por exemplo, quase impossibilitando a probabilidade de algumas prevalências. 
+Mas também temos que ver que a escolha dos hiperparâmetros vai influenciar bastante o resultado, já que podemos estar, por exemplo, quase impossibilitando a probabilidade de algumas prevalências. 
  
- Podemos contruir uma priori não informativa, nesse caso que não temos informação. No caso da distribuição Beta, poderíamos atribuir $a = b = 1$, para termos uma distribuição uniforme no intervalo $[0,1]$, que na verdade é informativa, e tem influencia a posteriori mais do que gostaríamos. Entretanto, existem técnicas para construir essas distribuições. Intuitivamente, a ideia é minimizar o impacto da priori na nossa posteriori, e, nesse caso, a distribuição dela vai se aproximar à estimativa da verossimelança máxima. Neste artigo de [Jefrey](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703), ele constrói um método baseado na informação de Fisher.
- 
- Nesse método, $p(\theta) \propto \sqrt{\det I(\theta)}$. Como estamos em um caso unidimensional, então:
+Para isso, nesse caso, a escolha de uma priori não informativa é algo bem interessante, dado que não temos informação anterior. No artigo de [**Jeffreys**](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703) é construído um método baseado na informação de Fisher para encontrar essa priori. Intuitivamente, a ideia é minimizar o impacto da priori na nossa posteriori, e, nesse caso, a distribuição dela vai se aproximar à estimativa da verossimelança máxima. Assim, $p(\theta) \propto \sqrt{\det I(\theta)}$. Como estamos em um caso unidimensional:
  
 $$
 \begin{split}
@@ -78,9 +78,7 @@ p(\theta) \propto (I(\theta))^{\frac{1}{2}} &= (E[(\frac{d}{d\theta}\log f(y|\th
 &= n^{\frac{1}{2}}(u + v - 1)(1 - u + \theta(u+v-1))^{-\frac{1}{2}}(u - \theta(u + v - 1))^{-\frac{1}{2}} \\
 \end{split}
 $$
- Assim $p(\theta) \propto f(1 - u + \theta(u + v - 1), \frac{1}{2}, \frac{1}{2}) = \frac{f(\theta, \frac{1}{2}, \frac{1}{2})}{u + v - 1}$, onde $f$ é a função densidade da distribuição Beta. 
- 
- Concluimos $p(\theta)$ tem distrição $Beta(0.5, 0.5)$. Essa será nossa priori. 
+ Assim $p(\theta) \propto f(1 - u + \theta(u + v - 1), \frac{1}{2}, \frac{1}{2}) = \frac{f(\theta, \frac{1}{2}, \frac{1}{2})}{u + v - 1}$, onde $f$ é a função densidade da distribuição Beta. Concluimos $p(\theta)$ tem distrição $Beta(0.5, 0.5)$.
  
  Vejamos o formato de uma $Beta(0.5,0.5)$
 
@@ -93,11 +91,18 @@ b) Derive $\operatorname{Pr}(\theta \mid y, n, u, v)$;
  
  \textbf{Resposta:}
  
+ Para esse exercício, farei uma pequena simplificação. Sabemos que a Distribuição Beta é conjugada da verossimelhança binomial. Então o formato da Posteriori é conhecido e é, também, uma distribuição Beta. Nesse caso, utilizarei uma priori para o parâmetro $\omega = 1 - u + \theta(u + v -1)$. Nesse caso, a verossimelhança é de uma binomial com esse parâmetro e podemos usar $Beta(0.5,0.5)$ para obter os cálculos da Posteriori. Nesse caso, sabemos que
+$p(\omega \mid y, n, u, v)$ tem distribuição $Beta(0.5 + y, 0.5 + n - y)$
+
+Por fim, $p(\theta \mid y, n, u, v) = \frac{p(\omega \mid y, n, u, v)}{u + v - 1}$
+ 
 c) Suponha que $y = 4$ e $n = 5000$.
- Qual a média~\textit{a posteriori} de $\theta$?
+ Qual a média \textit{a posteriori} de $\theta$?
  Produza intervalos de credibilidade de $80$, $90$ e $95$\% para $\theta$. 
  
- \textbf{Resposta:}
+\textbf{Resposta:}
+ 
+$$E[\theta] = \frac{1}{u + v - 1}\frac{0.5 + y}{0.5 + n - y} = \frac{4.5}{4996.5}\frac{1}{u+v-1}$$ 
  
 d) \textbf{Bônus}. Que melhorias você faria neste modelo? Que outras fontes de incerteza estão sendo ignoradas?
  

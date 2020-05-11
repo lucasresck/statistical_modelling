@@ -58,33 +58,34 @@ Escola de Matematica Aplicada (EMAp), Getulio Vargas Foundation.
 Suponha que desejamos estimar a proporção $\theta \in (0, 1)$ de indivíduos infectados com um determinado patógeno em uma população.
 Suponha ainda que dispomos de um teste laboratorial, que produz o resultados $r = \{-, +\}$ indicando se o indivíduo ($y_i$) é livre ($0$) ou infectado ($1$).
 Se o teste fosse perfeito, poderíamos escrever a probabilidade de observar $y = \sum_{i =1}^n y_i$ testes positivos em $n$ testes realizados como\footnote{Porquê?}
+
 \begin{equation}
 \label{eq:prev_simple}
  \operatorname{Pr}\left( y \mid \theta, n \right) = \binom{n}{y} \theta^y (1-\theta)^{n-y}. 
 \end{equation}
 
-Isso vale, pois, dado $\theta$, sabemos que a variável aleatória que indica que um indivíduo está infectado tem distribuição Bernoulli com parâmetro $\theta$. Então o número de infectados é dado por uma binomial com parâmetro $\theta$.
-
 Infelizmente, o teste não é perfeito, acertando o diagnóstico com probabilidades fixas da seguinte forma\footnote{Naturalmente, $u, v \in (0, 1) \times (0, 1)$, levando em conta a restrição $u + v > 1$.}
+
 \begin{align}
 %  \operatorname{Pr}\left(\right)
  \operatorname{Pr}\left(\ r = + \mid y_i = 0 \right) &:= 1-u,\\
  \operatorname{Pr}\left( r = - \mid y_i = 1 \right) &:= 1-v,
 \end{align}
+
 de modo que agora, assumindo $u + v > 1$, escrevemos\footnote{Exercício bônus: mostre porquê.}
+
 \begin{equation}
-  \begin{split}
-    \operatorname{Pr}\left(r = + \mid \theta, u, v \right) &= Pr\left(r = + \mid y_i = 0\right)Pr\left(y_i = 0\right) + Pr\left(r = + \mid y_i = 1\right)Pr\left(y_i = 1\right) \\
-    &= Pr\left(r = + \mid y_i = 0\right)Pr\left(y_i = 0\right) + (1 - Pr\left(r = - \mid y_i = 1\right))Pr\left(y_i = 1\right) \\
-    &= (1 - u)(1 - \theta) + (1 - (1 - v))\theta \\
-    &= 1 - u + \theta(u + v - 1)
-     \end{split}
+   \begin{split}
+  \operatorname{Pr}\left(r = + \mid \theta, u, v \right) &= Pr\left(r = + \mid y_i = 0\right)Pr\left(y_i = 0\right) + Pr\left(r = + \mid y_i = 1\right)Pr\left(y_i = 1\right) \\
+  &= Pr\left(r = + \mid y_i = 0\right)Pr\left(y_i = 0\right) + (1 - Pr\left(r = - \mid y_i = 1\right))Pr\left(y_i = 1\right) \\
+  &= (1 - u)(1 - \theta) + (1 - (1 - v))\theta \\
+  &= 1 - u + \theta(u + v - 1)
+   \end{split}
 \end{equation}
 e podemos reescrever a probabilidade em~(\ref{eq:prev_simple}):
 \begin{equation}
  \operatorname{Pr}\left(y \mid \theta, n, u, v\right) = \binom{n}{y} \left[ 1 - u + \theta(u + v - 1) \right]^{y} \left[ u - \theta(u + v - 1)\right]^{n-y}.
 \end{equation}
-
 
 \section*{Problema(s)}
 \begin{itemize}
@@ -111,41 +112,41 @@ e podemos reescrever a probabilidade em~(\ref{eq:prev_simple}):
 
 \bibliography{../biblio/statmodelling}
 
-% \begin{figure}[!ht]
-% \centering
-% \includegraphics[width=\textwidth, height = 15cm]{figures/}
-% \caption{\textbf{}.
-% }
-% \label{fig:}
-% \end{figure}
-%%
-% \begin{figure}
-% \hfill
-% \subfigure[Title A]{\includegraphics[width=5cm]{img1}}
-% \hfill
-% \subfigure[Title B]{\includegraphics[width=5cm]{img2}}
-% \hfill
-% \caption{\textbf{}.
-% }
-% \label{fig:}
-% \end{figure}
-
 \section*{Soluções}
     
-Uma distribuição de probabilidade plausível para o parâmetro $\theta$ é dada pela distribuição beta, uma distribuição flexível, que pode assumir várias formas, dependendo da escolha de valores de $a$ e $b$. Nesse caso, a priori é $\xi(\theta) = \frac{1}{B(a,b)}\theta^{n-1}(1 - \theta)^{b - 1}$. Claro que temos que conhecer os valores $a$ e $b$. Segundo, os hiperparâmetros podem ser escolhidos em um painel de experts, usando resultados de estudos anteriores. 
+ Uma distribuição de probabilidade plausível para o parâmetro $\theta$ é dada pela distribuição beta, uma distribuição flexível, que pode assumir várias formas, dependendo da escolha de valores de $a$ e $b$. Nesse caso, a priori é $\xi(\theta) = \frac{1}{B(a,b)}\theta^{n-1}(1 - \theta)^{b - 1}$. Claro que temos que conhecer os valores $a$ e $b$. Segundo \href{este artigo}{http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703}, os hiperparâmetros podem ser escolhidos em um painel de experts, usando resultados de estudos anteriores. 
  
- Nesse caso, a ideia seria aproximar a moda da distribuição beta para a prevalência acreditada por alguns epidemiologistas e, também, aproximar o desvio padrão como uma parte, um quarto, por exemplo, dos limites inferior e superior, acreditados pelo epidemeologista. 
+ Nesse caso, a ideia seria aproximar a moda da distribuição $Beta$ para a prevalência acreditada por alguns epidemiologistas e, também, aproximar o desvio padrão como uma parte, um quarto, por exemplo, dos limites inferior e superior, acreditados pelo epidemeologista. 
  
  Veja, entretando, que a escolha dos hiperarâmetros vai influenciar bastante o resultado, já que podemos estar, por exemplo, quase impossibilitando a probabilidade de algumas prevalências. 
  
- Podemos contruir uma priori não informativa, nesse caso que não temos informação. No caso da distribuição beta, poderíamos atribuir $a = b = 1$, para termos uma distribuição uniforme no intervalo $[0,1]$. Entretanto, existem técnicas para construir essas distribuições. Intuitivamente, a ideia é minimizar o impacto da priori na nossa posteriori, e, nesse caso, a distribuição dela vai se aproximar à estimativa da verossimelança máxima. Neste artigo de \href{http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703}{Jefrey}, ele comenta um método para essa construção, baseado na informação de Fisher. 
+ Podemos contruir uma priori não informativa, nesse caso que não temos informação. No caso da distribuição Beta, poderíamos atribuir $a = b = 1$, para termos uma distribuição uniforme no intervalo $[0,1]$, que na verdade é informativa, e tem influencia a posteriori mais do que gostaríamos. Entretanto, existem técnicas para construir essas distribuições. Intuitivamente, a ideia é minimizar o impacto da priori na nossa posteriori, e, nesse caso, a distribuição dela vai se aproximar à estimativa da verossimelança máxima. Neste artigo de \href{Jeffreys}{http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703}, ele constrói um método baseado na informação de Fisher.
  
- Usando os cálculos obtidos pelo artigo, obteríamos que essa priori seria de fato uma distribuição beta, mas $a = b = 0.5$. Isso, claro, se nossa verossemilhança for uma binomial. 
+ Nesse método, $p(\theta) \propto \sqrt{\det I(\theta)}$. Como estamos em um caso unidimensional, então:
  
- Vejamos o formato de uma $\mathrm{Beta}(0.5,0.5)$
+\begin{equation}
+\begin{split}
+p(\theta) \propto (I(\theta))^{\frac{1}{2}} &= (E[(\frac{d}{d\theta}\log f(y|\theta, u, v))^2])^{\frac{1}{2}} \\
+&= (E[(\frac{d}{d\theta}\log f(y|\theta, u, v))^2])^{\frac{1}{2}} \\
+&= \left(E\left[\left(\frac{y(u + v - 1)}{1 - u + \theta(u + v - 1)} + \frac{(y-n)(u + v - 1)}{u - \theta(u + v - 1)}\right)^2\right]\right)^{\frac{1}{2}} \\
+&= \left((u + v - 1)^2E\left[\left(\frac{y - n + un - n\theta(u + v - 1)}{(1 - u + \theta(u + v - 1))(u - \theta(u + v - 1))}\right)^2\right]\right)^{\frac{1}{2}} \\
+&= \left((u + v - 1)^2E\left[\left(\frac{y - n + un - n\theta(u + v - 1)}{(1 - u + \theta(u + v - 1))(u - \theta(u + v - 1))}\right)^2\right]\right)^{\frac{1}{2}} \\
+&= \frac{(u + v - 1)}{(1 - u + \theta(u + v - 1))(u - \theta(u + v - 1))}E\left[(y - n + un - n\theta(u + v - 1))^2\right]^{\frac{1}{2}} \\
+&= \frac{(u + v - 1)}{(1 - u + \theta(u + v - 1))(u - \theta(u + v - 1))}(Var[y] + E[y - n(1 - u + \theta(u + v - 1))]^2)^{\frac{1}{2}} \\
+&= \frac{(u + v - 1)(n(1 - u + \theta(u+v-1))(u - \theta(u + v - 1)))^{\frac{1}{2}}}{(1 - u + \theta(u + v - 1))(u - \theta(u + v - 1))} \\
+&= \frac{n^{\frac{1}{2}}(u + v - 1)(1 - u + \theta(u+v-1))^{\frac{1}{2}}(u - \theta(u + v - 1))^{\frac{1}{2}}}{(1 - u + \theta(u + v - 1))(u - \theta(u + v - 1))} \\
+&= n^{\frac{1}{2}}(u + v - 1)(1 - u + \theta(u+v-1))^{-\frac{1}{2}}(u - \theta(u + v - 1))^{-\frac{1}{2}} \\
+\end{split}
+\end{equation}
 
+ Assim $p(\theta) \propto f(1 - u + \theta(u + v - 1), \frac{1}{2}, \frac{1}{2}) = \frac{f(\theta, \frac{1}{2}, \frac{1}{2})}{u + v - 1}$, onde $f$ é a função densidade da distribuição Beta. 
+ 
+ Concluimos $p(\theta)$ tem distrição $Beta(0.5, 0.5)$. Essa será nossa priori. 
+ 
+ Vejamos o formato de uma $Beta(0.5,0.5)$
+ 
 <<>>=
-p = seq(0,1, length=100)
+p <- seq(0,1, length=100)
 plot(p, dbeta(p, 0.5, 0.5), ylab="density", type ="l", col=4)
 @
 
