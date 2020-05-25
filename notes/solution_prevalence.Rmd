@@ -60,9 +60,9 @@ $$\xi(\theta) = \frac{1}{B(a,b)}\theta^{n-1}(1 - \theta)^{b - 1}$$
 
 Segundo [**este artigo**](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703), os hiperparâmetros podem ser escolhidos em um painel de experts, usando resultados de estudos anteriores. Nesse caso, a ideia é aproximar a moda da distribuição para a prevalência acreditada por alguns epidemiologistas e, também, aproximar o desvio padrão como uma parte, um quarto, por exemplo, dos limites inferior e superior. 
  
-Mas também temos que ver que a escolha dos hiperparâmetros vai influenciar bastante o resultado, já que podemos estar, por exemplo, quase impossibilitando a probabilidade de algumas prevalências. 
- 
-Para isso, nesse caso, a escolha de uma priori não informativa é algo bem interessante, dado que não temos informação anterior. No artigo de [**Jeffreys**](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703) é construído um método baseado na informação de Fisher para encontrar essa priori. Intuitivamente, a ideia é minimizar o impacto da priori na nossa posteriori, e, nesse caso, a distribuição dela vai se aproximar à estimativa da verossimelança máxima. Assim, $p(\theta) \propto \sqrt{\det I(\theta)}$. Como estamos em um caso unidimensional:
+É importante ressaltar a importância da escolha dos hiperparâmetros, já que eles influenciam bastante o resultado, já que podem, por exemplo, impossibilitar a ocorrência de alguns prevalências. 
+
+Se considerarmos que não temos informação anterior à observação, escolher uma priori não informativa é algo bem interessante. No artigo de [**Jeffreys**](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0102-311X2014000400703) é construído um método baseado na informação de Fisher para encontrar essa priori. Intuitivamente, a ideia é minimizar o impacto da priori na nossa posteriori, e, nesse caso, a distribuição dela vai se aproximar à estimativa da verossimelança máxima. Assim, $p(\theta) \propto \sqrt{\det I(\theta)}$. Como estamos em um caso unidimensional:
  
 $$
 \begin{split}
@@ -83,18 +83,41 @@ $$
  Vejamos o formato de uma $Beta(0.5,0.5)$
 
 ```{r}
-p = seq(0,1, length=100)
-plot(p, dbeta(p, 0.5, 0.5), ylab="density", type ="l", col=4)
+p = seq(from = 0, to = 1, length = 10000)
+plot(p, dbeta(p, 0.5, 0.5), ylab="density", type ="l", col=4,
+     main = "Distribuição a Priori não informativa")
 ```
  
 b) Derive $\operatorname{Pr}(\theta \mid y, n, u, v)$;
  
  \textbf{Resposta:}
  
- Para esse exercício, farei uma pequena simplificação. Sabemos que a Distribuição Beta é conjugada da verossimelhança binomial. Então o formato da Posteriori é conhecido e é, também, uma distribuição Beta. Nesse caso, utilizarei uma priori para o parâmetro $\omega = 1 - u + \theta(u + v -1)$. Nesse caso, a verossimelhança é de uma binomial com esse parâmetro e podemos usar $Beta(0.5,0.5)$ para obter os cálculos da Posteriori. Nesse caso, sabemos que
+ Para esse exercício, farei uma pequena simplificação. Sabemos que a Distribuição Beta é conjugada da verossimelhança binomial. Então o formato da Posteriori é conhecido e é, também, uma Distribuição Beta. Nesse caso, utilizarei uma priori para o parâmetro $\omega = 1 - u + \theta(u + v -1)$. Nesse caso, a verossimelhança é de uma binomial com esse parâmetro e podemos usar $Beta(0.5,0.5)$ para obter os cálculos da Posteriori. Sabemos, portanto, que
 $p(\omega \mid y, n, u, v)$ tem distribuição $Beta(0.5 + y, 0.5 + n - y)$
 
-Por fim, $p(\theta \mid y, n, u, v) = \frac{p(\omega \mid y, n, u, v)}{u + v - 1}$
+Por fim, $p(\theta \mid y, n, u, v) = p(\omega \mid y, n, u, v)(u + v - 1)$
+
+Considere esse exemplo:
+```{r}
+u <- 0.6
+v <- 0.7
+y <- 4
+n <- 5000
+
+par(mfrow = c(1,2))
+p <- seq(from = 0, to = 0.01, length = 10000)
+plot(p, dbeta(p, 0.5 + y, 0.5 + n -y)*(u + v - 1), type = 'l', col = "red", 
+     main = "Distribuição a Posteriori", ylab = "density")
+abline(v = y/n, col = "green")
+
+y <- 2500
+
+p <- seq(from = 0, to = 1, length = 10000)
+plot(p, dbeta(p, 0.5 + y, 0.5 + n - y)*(u + v - 1), type = 'l', col = "red", 
+     main = "Distribuição a Posteriori", ylab = "density")
+abline(v = y/n, col = "green")
+```
+Observe como é concentrada em torno da média observacional, indicada com a linha em verde. 
  
 c) Suponha que $y = 4$ e $n = 5000$.
  Qual a média \textit{a posteriori} de $\theta$?
@@ -102,8 +125,4 @@ c) Suponha que $y = 4$ e $n = 5000$.
  
 \textbf{Resposta:}
  
-$$E[\theta] = \frac{1}{u + v - 1}\frac{0.5 + y}{0.5 + n - y} = \frac{4.5}{4996.5}\frac{1}{u+v-1}$$ 
- 
-d) \textbf{Bônus}. Que melhorias você faria neste modelo? Que outras fontes de incerteza estão sendo ignoradas?
- 
- \textbf{Resposta:}
+$$E[\theta\mid Y=y] = \frac{1}{u + v - 1}\frac{0.5 + y}{0.5 + n - y} = \frac{4.5}{4996.5}\frac{1}{u+v-1}$$ 
